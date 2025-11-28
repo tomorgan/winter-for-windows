@@ -13,6 +13,9 @@ public class UpdateManager
     {
         _updater = new UpdatumManager("tomorgan", "winter-for-windows");
         _updater.PropertyChanged += OnUpdaterPropertyChanged;
+        
+        // Prefer .exe files over .zip files
+        _updater.AssetExtensionFilter = "exe";
     }
 
     private void OnUpdaterPropertyChanged(object? sender, PropertyChangedEventArgs e)
