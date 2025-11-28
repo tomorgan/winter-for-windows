@@ -1,0 +1,192 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  create-release:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Extract version from branch name
+      id: version
+      shell: pwsh
+      run: |
+        $branch = "${{ github.ref_name }}"
+        $version = $branch
+        echo "VERSION=$version" >> $env:GITHUB_OUTPUT
+        echo "VERSION_NUMBER=$($version.TrimStart('v'))" >> $env:GITHUB_OUTPUT
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Update project version
+      shell: pwsh
+      run: |
+        $version = "${{ steps.version.outputs.VERSION_NUMBER }}"
+        $csprojPath = "WinterForWindows/WinterForWindows.csproj"
+        $content = Get-Content $csprojPath -Raw
+        $content = $content -replace '<Version>.*?</Version>', "<Version>$version</Version>"
+        Set-Content $csprojPath $content
+        
+    - name: Restore dependencies
+      run: dotnet restore WinterForWindows/WinterForWindows.csproj
+      
+    - name: Build and publish win-x64
+      run: |
+        dotnet publish WinterForWindows/WinterForWindows.csproj `
+          -c Release `
+          -r win-x64 `
+          --self-contained `
+          /p:PublishSingleFile=true `
+          /p:IncludeNativeLibrariesForSelfExtract=true `
+          /p:EnableCompressionInSingleFile=true `
+          /p:DebugType=None `
+          /p:DebugSymbols=false
+          
+    - name: Build and publish win-arm64
+      run: |
+        dotnet publish WinterForWindows/WinterForWindows.csproj `
+          -c Release `
+          -r win-arm64 `
+          --self-contained `
+          /p:PublishSingleFile=true `
+          /p:IncludeNativeLibrariesForSelfExtract=true `
+          /p:EnableCompressionInSingleFile=true `
+          /p:DebugType=None `
+          /p:DebugSymbols=false
+          
+    - name: Rename executables
+      shell: pwsh
+      run: |
+        $version = "${{ steps.version.outputs.VERSION }}"
+        
+        # Rename win-x64
+        $x64Source = "WinterForWindows/bin/Release/net8.0-windows/win-x64/publish/WinterForWindows.exe"
+        $x64Dest = "WinterForWindows_win-x64_$version.exe"
+        Copy-Item $x64Source $x64Dest
+        
+        # Rename win-arm64
+        $arm64Source = "WinterForWindows/bin/Release/net8.0-windows/win-arm64/publish/WinterForWindows.exe"
+        $arm64Dest = "WinterForWindows_win-arm64_$version.exe"
+        Copy-Item $arm64Source $arm64Dest
+        
+        # Create zip files for portable versions
+        Compress-Archive -Path $x64Source -DestinationPath "WinterForWindows_win-x64_$version.zip"
+        Compress-Archive -Path $arm64Source -DestinationPath "WinterForWindows_win-arm64_$version.zip"
+        
+    - name: Generate release notes
+      id: release_notes
+      shell: pwsh
+      run: |
+        $version = "${{ steps.version.outputs.VERSION }}"
+        $notes = @"
+        # 🎄 Winter for Windows $version
+
+        Transform your Windows desktop into a festive winter wonderland!
+
+        ## ✨ Features
+
+        ### 🎄 Fairy Lights
+        Colorful, twinkling Christmas lights strung elegantly across the top of your screen
+        - 40 vibrant bulbs in 8 festive colors
+        - Each bulb twinkles independently with realistic glow effects
+        - Gentle swaying animation simulating a breeze
+
+        ### ❄️ Snow
+        Realistic snowfall that gently drifts across your desktop
+        - Physics-based particle system with natural falling patterns
+        - Snowflakes accumulate at the bottom of your screen
+        - Performance-optimized for smooth animation
+
+        ### 🐧 Penguin
+        An adorable animated penguin that walks along your taskbar
+        - Multiple behaviors: walking, waving, sliding, jumping, and standing
+        - Charming wobble animation when walking
+        - Wraps seamlessly around screen edges
+
+        ### 🎅 Christmas Countdown
+        A festive floating widget showing days until Christmas
+        - Displays countdown to December 25th
+        - Draggable - position it anywhere on your screen
+        - Special "Merry Christmas!" message on Christmas Day
+
+        ### 🔧 System Features
+        - **Persistent Settings**: Your effect preferences are saved and restored automatically
+        - **System Tray Integration**: Runs quietly in the background with easy access
+        - **Automatic Updates**: Built-in update checker using GitHub Releases
+        - **Click-Through Overlays**: All effects are non-intrusive and won't interfere with your work
+        - **Custom Icon**: Festive Christmas tree icon in your system tray
+
+        ## 📦 Installation
+
+        ### For Intel/AMD Processors (x64):
+        Download ``WinterForWindows_win-x64_$version.exe`` (recommended for most users)
+
+        ### For ARM Processors (Surface devices, etc.):
+        Download ``WinterForWindows_win-arm64_$version.exe``
+
+        ### Portable Version:
+        Download the corresponding .zip file and extract it
+
+        **Requirements**: Windows 10 or later (includes .NET 8.0 runtime)
+
+        ## 🎯 How to Use
+
+        1. Launch the app - it will appear in your system tray (notification area)
+        2. Right-click the Christmas tree icon
+        3. Check/uncheck the effects you want to enable:
+           - ✅ Fairy Lights
+           - ✅ Snow
+           - ✅ Penguin
+           - ✅ Christmas Countdown
+        4. Your preferences are automatically saved!
+
+        ## 🔄 Updates
+
+        The app will automatically check for updates on startup. You can also manually check via the system tray menu.
+
+        ## 🙏 Credits
+
+        Inspired by the macOS application **Festivitas**. Built with love to spread holiday cheer to Windows users everywhere!
+
+        ---
+
+        **Enjoy the festive season!** 🎄❄️🐧🎅
+
+        If you encounter any issues or have suggestions, please [open an issue](https://github.com/tomorgan/winter-for-windows/issues).
+        "@
+        
+        $notes | Out-File -FilePath release_notes.md -Encoding utf8
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.version.outputs.VERSION }}
+        name: 🎄 Winter for Windows ${{ steps.version.outputs.VERSION }}
+        body_path: release_notes.md
+        draft: false
+        prerelease: false
+        generate_release_notes: false
+        files: |
+          WinterForWindows_win-x64_${{ steps.version.outputs.VERSION }}.exe
+          WinterForWindows_win-arm64_${{ steps.version.outputs.VERSION }}.exe
+          WinterForWindows_win-x64_${{ steps.version.outputs.VERSION }}.zip
+          WinterForWindows_win-arm64_${{ steps.version.outputs.VERSION }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Delete version branch
+      if: success()
+      run: |
+        git push origin --delete ${{ github.ref_name }}
