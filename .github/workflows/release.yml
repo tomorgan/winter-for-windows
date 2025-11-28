@@ -189,4 +189,4 @@ jobs:
     - name: Delete version branch
       if: success()
       run: |
-        git push origin --delete ${{ github.ref_name }}
+        git push origin --delete refs/heads/${{ github.ref_name }}
