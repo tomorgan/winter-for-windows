@@ -72,53 +72,80 @@ public partial class FairyLightsWindow : OverlayWindowBase
     {
         var bulb = new Ellipse
         {
-            Width = 16,
-            Height = 20,
+            Width = 24,
+            Height = 32,
             Fill = new RadialGradientBrush
             {
+                GradientOrigin = new Point(0.5, 0.3),
+                Center = new Point(0.5, 0.5),
+                RadiusX = 0.5,
+                RadiusY = 0.6,
                 GradientStops = new GradientStopCollection
                 {
-                    new GradientStop(Colors.White, 0.0),
-                    new GradientStop(color, 0.5),
+                    new GradientStop(Color.FromArgb(255, 255, 255, 255), 0.0),
+                    new GradientStop(Color.FromArgb(255, 
+                        (byte)Math.Min(255, color.R + 100),
+                        (byte)Math.Min(255, color.G + 100),
+                        (byte)Math.Min(255, color.B + 100)), 0.3),
+                    new GradientStop(color, 0.6),
                     new GradientStop(Color.FromRgb(
-                        (byte)(color.R * 0.5),
-                        (byte)(color.G * 0.5),
-                        (byte)(color.B * 0.5)), 1.0)
+                        (byte)(color.R * 0.4),
+                        (byte)(color.G * 0.4),
+                        (byte)(color.B * 0.4)), 1.0)
                 }
             },
             Effect = new System.Windows.Media.Effects.DropShadowEffect
             {
                 Color = color,
-                BlurRadius = 15,
+                BlurRadius = 25,
                 ShadowDepth = 0,
-                Opacity = 0.8
+                Opacity = 0.9
             }
         };
 
-        Canvas.SetLeft(bulb, x - 8);
-        Canvas.SetTop(bulb, y - 10);
+        Canvas.SetLeft(bulb, x - 12);
+        Canvas.SetTop(bulb, y - 16);
 
         return bulb;
     }
 
     private void AnimateLightBulb(Ellipse bulb, int index)
     {
+        // More dramatic twinkling with varied patterns
         var twinkleAnimation = new DoubleAnimation
         {
-            From = 0.6,
+            From = 0.4,
             To = 1.0,
-            Duration = TimeSpan.FromSeconds(1.5 + _random.NextDouble() * 1.5),
+            Duration = TimeSpan.FromSeconds(0.8 + _random.NextDouble() * 1.2),
             AutoReverse = true,
             RepeatBehavior = RepeatBehavior.Forever,
-            BeginTime = TimeSpan.FromMilliseconds(_random.Next(0, 1000))
+            BeginTime = TimeSpan.FromMilliseconds(_random.Next(0, 1500)),
+            EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
         };
         
         bulb.BeginAnimation(OpacityProperty, twinkleAnimation);
 
+        // Add glow intensity animation
+        var glowAnimation = new DoubleAnimation
+        {
+            From = 20,
+            To = 30,
+            Duration = TimeSpan.FromSeconds(1.0 + _random.NextDouble() * 1.5),
+            AutoReverse = true,
+            RepeatBehavior = RepeatBehavior.Forever,
+            BeginTime = TimeSpan.FromMilliseconds(_random.Next(0, 1000))
+        };
+
+        if (bulb.Effect is System.Windows.Media.Effects.DropShadowEffect shadow)
+        {
+            shadow.BeginAnimation(System.Windows.Media.Effects.DropShadowEffect.BlurRadiusProperty, glowAnimation);
+        }
+
+        // Subtle sway
         var swayAnimation = new DoubleAnimation
         {
-            From = -3,
-            To = 3,
+            From = -2,
+            To = 2,
             Duration = TimeSpan.FromSeconds(3 + _random.NextDouble() * 2),
             AutoReverse = true,
             RepeatBehavior = RepeatBehavior.Forever,

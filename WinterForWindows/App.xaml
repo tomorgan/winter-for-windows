@@ -6,6 +6,7 @@
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
         <tb:TaskbarIcon x:Key="NotifyIcon"
+                        IconSource="icon.ico"
                         ToolTipText="Winter for Windows"
                         MenuActivation="RightClick">
             <tb:TaskbarIcon.ContextMenu>
@@ -15,6 +16,7 @@
                     <MenuItem Header="Fairy Lights" Name="MenuFairyLights" IsCheckable="True"/>
                     <MenuItem Header="Snow" Name="MenuSnow" IsCheckable="True"/>
                     <MenuItem Header="Penguin" Name="MenuPenguin" IsCheckable="True"/>
+                    <MenuItem Header="Christmas Countdown" Name="MenuCountdown" IsCheckable="True"/>
                     <Separator/>
                     <MenuItem Header="Check for Updates..." Name="MenuCheckUpdates"/>
                     <MenuItem Header="Exit" Name="MenuExit"/>

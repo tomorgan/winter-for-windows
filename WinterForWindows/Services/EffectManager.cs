@@ -7,6 +7,7 @@ public class EffectManager : IDisposable
     private FairyLightsWindow? _fairyLightsWindow;
     private SnowWindow? _snowWindow;
     private PenguinWindow? _penguinWindow;
+    private ChristmasCountdownWindow? _countdownWindow;
 
     public void ToggleFairyLights(bool enabled)
     {
@@ -38,28 +39,27 @@ public class EffectManager : IDisposable
     {
         if (enabled)
         {
-            try
-            {
-                _penguinWindow ??= new PenguinWindow();
-                _penguinWindow.Show();
-                System.Windows.MessageBox.Show(
-                    $"Penguin window created!\n" +
-                    $"Left: {_penguinWindow.Left}\n" +
-                    $"Top: {_penguinWindow.Top}\n" +
-                    $"Width: {_penguinWindow.Width}\n" +
-                    $"Height: {_penguinWindow.Height}\n" +
-                    $"IsVisible: {_penguinWindow.IsVisible}\n" +
-                    $"Topmost: {_penguinWindow.Topmost}",
-                    "Debug");
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Error creating penguin: {ex.Message}", "Error");
-            }
+            _penguinWindow ??= new PenguinWindow();
+            _penguinWindow.Show();
+            _penguinWindow.Activate();
         }
         else
         {
             _penguinWindow?.Hide();
+        }
+    }
+
+    public void ToggleCountdown(bool enabled)
+    {
+        if (enabled)
+        {
+            _countdownWindow ??= new ChristmasCountdownWindow();
+            _countdownWindow.Show();
+            _countdownWindow.Activate();
+        }
+        else
+        {
+            _countdownWindow?.Hide();
         }
     }
 
@@ -68,5 +68,6 @@ public class EffectManager : IDisposable
         _fairyLightsWindow?.Close();
         _snowWindow?.Close();
         _penguinWindow?.Close();
+        _countdownWindow?.Close();
     }
 }

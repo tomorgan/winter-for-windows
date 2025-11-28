@@ -40,10 +40,10 @@ public partial class PenguinWindow : Window
         ShowInTaskbar = false;
         Topmost = true;
         AllowsTransparency = true;
-        Background = new SolidColorBrush(Color.FromArgb(30, 255, 0, 0)); // Semi-transparent red for debugging
+        Background = Brushes.Transparent;
         
-        var screenHeight = SystemParameters.VirtualScreenHeight;
-        var screenWidth = SystemParameters.VirtualScreenWidth;
+        var screenHeight = SystemParameters.PrimaryScreenHeight;
+        var screenWidth = SystemParameters.PrimaryScreenWidth;
         
         Width = screenWidth;
         Height = 150;
@@ -189,7 +189,7 @@ public partial class PenguinWindow : Window
     {
         if (_penguinBody == null) return;
 
-        double screenWidth = SystemParameters.VirtualScreenWidth;
+        double screenWidth = SystemParameters.PrimaryScreenWidth;
 
         switch (_currentState)
         {

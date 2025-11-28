@@ -1,0 +1,47 @@
+<Window x:Class="WinterForWindows.Overlays.ChristmasCountdownWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Christmas Countdown">
+    <Border x:Name="CountdownBorder" 
+            Background="#CC8B0000" 
+            BorderBrush="#FFD4AF37" 
+            BorderThickness="3" 
+            CornerRadius="15"
+            Padding="20,15">
+        <Border.Effect>
+            <DropShadowEffect Color="Gold" BlurRadius="20" ShadowDepth="0" Opacity="0.6"/>
+        </Border.Effect>
+        <StackPanel>
+            <TextBlock x:Name="TitleText" 
+                       Text="🎄 Christmas Countdown 🎄"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Foreground="#FFD4AF37"
+                       HorizontalAlignment="Center"
+                       FontFamily="Segoe UI Emoji"
+                       Margin="0,0,0,10">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="3" ShadowDepth="2" Opacity="0.5"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock x:Name="DaysText" 
+                       Text="0"
+                       FontSize="48"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       FontFamily="Arial">
+                <TextBlock.Effect>
+                    <DropShadowEffect Color="#FFD4AF37" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                </TextBlock.Effect>
+            </TextBlock>
+            <TextBlock x:Name="DaysLabel" 
+                       Text="days until Christmas"
+                       FontSize="14"
+                       Foreground="#FFE8E8E8"
+                       HorizontalAlignment="Center"
+                       FontFamily="Segoe UI"
+                       Margin="0,5,0,0"/>
+        </StackPanel>
+    </Border>
+</Window>
