@@ -81,9 +81,9 @@ jobs:
         $arm64Dest = "WinterForWindows_win-arm64_$version.exe"
         Copy-Item $arm64Source $arm64Dest
         
-        # Create zip files for portable versions
-        Compress-Archive -Path $x64Source -DestinationPath "WinterForWindows_win-x64_$version.zip"
-        Compress-Archive -Path $arm64Source -DestinationPath "WinterForWindows_win-arm64_$version.zip"
+        # Create zip files containing just the single .exe file (for portable versions)
+        Compress-Archive -Path $x64Dest -DestinationPath "WinterForWindows_win-x64_$version.zip"
+        Compress-Archive -Path $arm64Dest -DestinationPath "WinterForWindows_win-arm64_$version.zip"
         
     - name: Generate release notes
       id: release_notes
