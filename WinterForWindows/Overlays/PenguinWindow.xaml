@@ -1,0 +1,9 @@
+<Window x:Class="WinterForWindows.Overlays.PenguinWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:WinterForWindows.Overlays"
+        Title="Penguin Overlay">
+    <Canvas x:Name="PenguinCanvas" Background="Transparent">
+        <!-- Penguin will be added dynamically in code-behind -->
+    </Canvas>
+</Window>
