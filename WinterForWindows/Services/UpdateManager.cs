@@ -16,6 +16,9 @@ public class UpdateManager
         
         // Use .exe files for single-file executable updates (proper in-place updates)
         _updater.AssetExtensionFilter = "exe";
+        
+        // Set the executable name to ensure it's placed in the correct location
+        _updater.InstallUpdateSingleFileExecutableName = "WinterForWindows";
     }
 
     private void OnUpdaterPropertyChanged(object? sender, PropertyChangedEventArgs e)
