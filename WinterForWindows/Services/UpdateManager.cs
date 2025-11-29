@@ -14,8 +14,8 @@ public class UpdateManager
         _updater = new UpdatumManager("tomorgan", "winter-for-windows");
         _updater.PropertyChanged += OnUpdaterPropertyChanged;
         
-        // Use .zip files for portable app behavior (proper in-place updates)
-        _updater.AssetExtensionFilter = "zip";
+        // Use .exe files for single-file executable updates (proper in-place updates)
+        _updater.AssetExtensionFilter = "exe";
     }
 
     private void OnUpdaterPropertyChanged(object? sender, PropertyChangedEventArgs e)
