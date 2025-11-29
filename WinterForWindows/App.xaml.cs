@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
 using WinterForWindows.Services;
@@ -21,9 +22,21 @@ public partial class App : Application
         _settingsService = new SettingsService();
 
         SetupMenuHandlers();
+        SetVersionInTitle();
         RestoreSettings();
         
         _ = _updateManager.CheckForUpdatesAsync();
+    }
+
+    private void SetVersionInTitle()
+    {
+        if (_notifyIcon?.ContextMenu == null) return;
+
+        var version = Assembly.GetExecutingAssembly().GetName().Version;
+        var versionString = version != null ? $"v{version.Major}.{version.Minor}.{version.Build}" : "v0.0.0";
+        
+        var menuTitle = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[0];
+        menuTitle.Header = $"🎄 Winter for Windows {versionString}";
     }
 
     private void SetupMenuHandlers()
