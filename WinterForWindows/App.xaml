@@ -18,7 +18,6 @@
                     <MenuItem Header="Penguin" Name="MenuPenguin" IsCheckable="True"/>
                     <MenuItem Header="Christmas Countdown" Name="MenuCountdown" IsCheckable="True"/>
                     <Separator/>
-                    <MenuItem Header="Check for Updates..." Name="MenuCheckUpdates"/>
                     <MenuItem Header="Exit" Name="MenuExit"/>
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>

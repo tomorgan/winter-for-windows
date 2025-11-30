@@ -52,12 +52,6 @@ Release notes are automatically generated with:
 - Usage guide
 - Credits
 
-## Updatum Compatibility
-
-The release assets follow Updatum's naming convention:
-- Pattern: `{AppName}_win-{arch}_v{version}.{ext}`
-- This allows automatic updates to work correctly
-
 ## Example Workflow
 
 ```bash

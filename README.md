@@ -8,7 +8,6 @@ A delightful WPF application that brings festive Christmas cheer to your Windows
 - **❄️ Snow**: Realistic snowfall that gently drifts down across your desktop and accumulates against the taskbar
 - **🐧 Penguin**: An adorable animated penguin that walks along your taskbar, occasionally waving, sliding, and jumping
 - **🎅 Christmas Countdown**: A festive floating widget showing the number of days until Christmas Day, with special messaging on December 25th
-- **Automatic Updates**: Built-in update system powered by Updatum checks GitHub Releases for new versions
 - **Persistent Settings**: Your choices are saved and automatically restored when you restart the app
 - **System Tray Integration**: Runs quietly in the background with easy access from your system tray
 - **Click-Through Overlays**: All effects use transparent, non-intrusive windows that don't interfere with your work
@@ -73,7 +72,6 @@ The executable will be in `bin\Release\net8.0-windows\win-x64\publish\`
    - ✅ **Snow** - Toggle gentle snowfall effect
    - ✅ **Penguin** - Toggle the animated penguin walking along your taskbar
    - ✅ **Christmas Countdown** - Toggle the festive countdown widget
-   - 🔄 **Check for Updates...** - Manually check for new versions
    - ❌ **Exit** - Close the application
 
 ### Christmas Countdown Widget
@@ -118,7 +116,6 @@ The animated penguin:
 - **Framework**: .NET 8.0 WPF (Windows Presentation Foundation)
 - **Language**: C#
 - **UI**: XAML with transparent window overlays
-- **Updates**: Updatum library for GitHub Releases integration
 - **Settings**: JSON-based persistent storage in `%AppData%\WinterForWindows\settings.json`
 
 ### Key Features Implementation
@@ -132,7 +129,6 @@ The animated penguin:
 ### Dependencies
 
 - **Hardcodet.NotifyIcon.Wpf** 2.0.1 - System tray integration
-- **Updatum** 1.2.1 - Automatic update system
 
 ## Development
 
@@ -143,8 +139,7 @@ winter-for-windows/
 ├── WinterForWindows/
 │   ├── Services/
 │   │   ├── EffectManager.cs      - Manages all overlay windows
-│   │   ├── SettingsService.cs    - Handles persistent settings
-│   │   └── UpdateManager.cs      - Manages automatic updates
+│   │   └── SettingsService.cs    - Handles persistent settings
 │   ├── Overlays/
 │   │   ├── OverlayWindowBase.cs        - Base class for transparent overlays
 │   │   ├── FairyLightsWindow.xaml/cs   - Fairy lights implementation
@@ -185,7 +180,6 @@ This includes:
 - Christmas Day countdown widget
 - System tray integration
 - Persistent settings storage
-- Automatic update system via Updatum
 - Click-through transparent overlays
 
 ## Future Ideas

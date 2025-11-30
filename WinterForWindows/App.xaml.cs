@@ -9,7 +9,6 @@ public partial class App : Application
 {
     private TaskbarIcon? _notifyIcon;
     private EffectManager? _effectManager;
-    private UpdateManager? _updateManager;
     private SettingsService? _settingsService;
 
     protected override void OnStartup(StartupEventArgs e)
@@ -18,14 +17,11 @@ public partial class App : Application
 
         _notifyIcon = (TaskbarIcon)FindResource("NotifyIcon");
         _effectManager = new EffectManager();
-        _updateManager = new UpdateManager();
         _settingsService = new SettingsService();
 
         SetupMenuHandlers();
         SetVersionInTitle();
         RestoreSettings();
-        
-        _ = _updateManager.CheckForUpdatesAsync();
     }
 
     private void SetVersionInTitle()
@@ -47,8 +43,7 @@ public partial class App : Application
         var menuSnow = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[3];
         var menuPenguin = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[4];
         var menuCountdown = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[5];
-        var menuCheckUpdates = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[7];
-        var menuExit = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[8];
+        var menuExit = (System.Windows.Controls.MenuItem)_notifyIcon.ContextMenu.Items[7];
 
         menuFairyLights.Click += (s, e) => {
             _effectManager?.ToggleFairyLights(menuFairyLights.IsChecked);
@@ -66,7 +61,6 @@ public partial class App : Application
             _effectManager?.ToggleCountdown(menuCountdown.IsChecked);
             SaveSettings();
         };
-        menuCheckUpdates.Click += async (s, e) => await _updateManager!.CheckForUpdatesAsync(true);
         menuExit.Click += OnExit;
     }
 
