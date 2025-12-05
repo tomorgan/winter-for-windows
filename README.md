@@ -14,7 +14,8 @@ A delightful WPF application that brings festive Christmas cheer to your Windows
 
 ## Screenshots
 
-*(Coming soon - images showing fairy lights, snow, penguin, and countdown in action!)*
+<img width="1152" height="720" alt="Winter For Windows" src="https://github.com/user-attachments/assets/eaa96d6b-e185-49c5-9d15-3e3fed1a51f7" />
+
 
 ## Installation
 
